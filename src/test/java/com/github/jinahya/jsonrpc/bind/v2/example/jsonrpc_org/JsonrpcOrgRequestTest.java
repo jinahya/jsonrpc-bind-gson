@@ -58,7 +58,7 @@ class JsonrpcOrgRequestTest {
     }
 
     @Test
-    void e01_positional_parameters_01_request() throws IOException {
+    void r_e01_positional_parameters_01_request() throws IOException {
         for (ClassLoader l = getClass().getClassLoader(); l != null; l = l.getParent()) {
             log.debug("l: {}", l);
         }
@@ -69,30 +69,24 @@ class JsonrpcOrgRequestTest {
                     final GsonJsonrpcRequestMessage message = fromJson(s);
                     log.debug("message: {}", message);
                     requireValid(message);
+                    assertEquals("subtract", message.getMethod());
+                    assertTrue(message.hasParams());
+                    final List<Integer> params = message.getParamsAsArray(Integer.class);
+                    assertIterableEquals(asList(42, 23), params);
                     {
-                        assertEquals("subtract", message.getMethod());
+                        final Integer[] array = message.getParamsAsObject(Integer[].class);
+                        assertThat(array).isNotNull().containsSequence(42, 23);
                     }
                     {
-                        assertTrue(message.hasParams());
-                        final List<Integer> params = message.getParamsAsArray(Integer.class);
-                        assertIterableEquals(asList(42, 23), params);
-                        {
-                            final Integer[] array = message.getParamsAsObject(Integer[].class);
-                            assertThat(array).isNotNull().containsSequence(42, 23);
-                        }
-                        {
-                            final int[] array = message.getParamsAsObject(int[].class);
-                            assertThat(array).isNotNull().containsSequence(42, 23);
-                        }
+                        final int[] array = message.getParamsAsObject(int[].class);
+                        assertThat(array).isNotNull().containsSequence(42, 23);
                     }
-                    {
-                        assertTrue(message.hasId());
-                        assertEquals("1", message.getIdAsString());
-                        assertThat(message.getIdAsNumber()).isNotNull()
-                                .isEqualByComparingTo(BigInteger.valueOf(1L));
-                        assertThat(message.getIdAsLong()).isNotNull().isEqualTo(1L);
-                        assertThat(message.getIdAsInteger()).isNotNull().isEqualTo(1);
-                    }
+                    assertTrue(message.hasId());
+                    assertEquals("1", message.getIdAsString());
+                    assertThat(message.getIdAsNumber()).isNotNull()
+                            .isEqualByComparingTo(BigInteger.valueOf(1L));
+                    assertThat(message.getIdAsLong()).isNotNull().isEqualTo(1L);
+                    assertThat(message.getIdAsInteger()).isNotNull().isEqualTo(1);
                 }
         );
     }
