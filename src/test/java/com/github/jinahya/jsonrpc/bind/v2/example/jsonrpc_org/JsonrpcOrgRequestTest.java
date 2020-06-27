@@ -20,8 +20,8 @@ package com.github.jinahya.jsonrpc.bind.v2.example.jsonrpc_org;
  * #L%
  */
 
-import com.github.jinahya.jsonrpc.JsonrpcTests;
 import com.github.jinahya.jsonrpc.bind.JsonrpcBindException;
+import com.github.jinahya.jsonrpc.bind.v2.JsonrpcBindTests;
 import com.github.jinahya.jsonrpc.bind.v2.gson.GsonJsonrpcRequestMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,8 +31,8 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
 
-import static com.github.jinahya.jsonrpc.BeanValidationTests.requireValid;
-import static com.github.jinahya.jsonrpc.JsonrpcTests.acceptResourceStream;
+import static com.github.jinahya.jsonrpc.bind.v2.BeanValidationTests.requireValid;
+import static com.github.jinahya.jsonrpc.bind.v2.JsonrpcBindTests.acceptResourceStream;
 import static com.github.jinahya.jsonrpc.bind.v2.gson.GsonJsonrpcRequestMessage.fromJson;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -54,7 +54,7 @@ class JsonrpcOrgRequestTest {
 
     @BeforeEach
     void setThreadLocalCaller() {
-        JsonrpcTests.THREAD_LOCAL_CALLER.set(getClass());
+        JsonrpcBindTests.THREAD_LOCAL_CALLER.set(getClass());
     }
 
     @Test

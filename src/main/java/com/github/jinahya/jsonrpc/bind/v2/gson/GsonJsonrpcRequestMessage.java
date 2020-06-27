@@ -59,7 +59,7 @@ public class GsonJsonrpcRequestMessage
     }
 
     public static <T extends GsonJsonrpcRequestMessage> T fromJson(final InputStream stream, final Class<T> clazz) {
-        requireNonNull(stream, "reader is null");
+        requireNonNull(stream, "stream is null");
         requireNonNull(clazz, "clazz is null");
         try {
             // https://github.com/google/gson/issues/187
@@ -70,24 +70,24 @@ public class GsonJsonrpcRequestMessage
     }
 
     public static GsonJsonrpcRequestMessage fromJson(final InputStream stream) {
-        requireNonNull(stream, "reader is null");
+        requireNonNull(stream, "stream is null");
         return fromJson(stream, GsonJsonrpcRequestMessage.class);
     }
 
+    /**
+     * Returns a string representation of the object.
+     *
+     * @return a string representation of the object.
+     */
     @Override
     public String toString() {
         return super.toString() + "{"
                + PROPERTY_NAME_ID + "=" + id
                + "," + PROPERTY_NAME_PARAMS + "=" + params
-//               + "," + PROPERTY_NAME_UNRECOGNIZED_PROPERTIES + "=" + unrecognizedProperties
                + "}";
     }
 
     private JsonPrimitive id;
 
     private JsonElement params;
-
-//    @Setter(AccessLevel.NONE)
-//    @Getter(AccessLevel.NONE)
-//    private Map<String, Object> unrecognizedProperties;
 }

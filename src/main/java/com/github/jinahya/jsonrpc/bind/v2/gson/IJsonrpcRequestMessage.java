@@ -27,14 +27,17 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+import javax.validation.constraints.AssertTrue;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.jinahya.jsonrpc.bind.v2.gson.GsonJsonrpcConfiguration.getGson;
 import static com.github.jinahya.jsonrpc.bind.v2.gson.IJsonrpcMessageHelper.setRequestParams;
+import static com.github.jinahya.jsonrpc.bind.v2.gson.IJsonrpcObjectHelper.evaluatingTrue;
 import static com.github.jinahya.jsonrpc.bind.v2.gson.IJsonrpcObjectHelper.fromJsonArrayToListOf;
 import static com.github.jinahya.jsonrpc.bind.v2.gson.IJsonrpcObjectHelper.hasOneThenEvaluateOrFalse;
+import static com.github.jinahya.jsonrpc.bind.v2.gson.IJsonrpcObjectHelper.hasOneThenEvaluateOrTrue;
 import static com.github.jinahya.jsonrpc.bind.v2.gson.IJsonrpcObjectHelper.hasOneThenMapOrNull;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
@@ -45,6 +48,16 @@ interface IJsonrpcRequestMessage extends JsonrpcRequestMessage, IJsonrpcMessage 
     @Override
     default boolean hasParams() {
         return hasOneThenEvaluateOrFalse(
+                getClass(),
+                this,
+                IJsonrpcMessageHelper::getRequestParams,
+                evaluatingTrue()
+        );
+    }
+
+    @Override
+    default @AssertTrue boolean isParamsContextuallyValid() {
+        return hasOneThenEvaluateOrTrue(
                 getClass(),
                 this,
                 IJsonrpcMessageHelper::getRequestParams,

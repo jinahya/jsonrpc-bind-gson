@@ -32,17 +32,17 @@ public class GsonJsonrpcResponseMessageError
         extends AbstractJsonrpcResponseMessageError
         implements IJsonrpcResponseMessageError {
 
+    /**
+     * Returns a string representation of the object.
+     *
+     * @return a string representation of the object.
+     */
     @Override
     public String toString() {
         return super.toString() + "{"
                + PROPERTY_NAME_DATA + "=" + data
-//               + "," + PROPERTY_NAME_UNRECOGNIZED_PROPERTIES + "=" + unrecognizedProperties
                + "}";
     }
 
     private JsonElement data;
-
-//    @Setter(AccessLevel.NONE)
-//    @Getter(AccessLevel.NONE)
-//    private Map<String, Object> unrecognizedProperties;
 }
