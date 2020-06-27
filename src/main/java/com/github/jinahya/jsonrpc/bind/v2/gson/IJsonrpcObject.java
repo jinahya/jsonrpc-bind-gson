@@ -24,26 +24,4 @@ import com.github.jinahya.jsonrpc.bind.v2.JsonrpcObject;
 
 interface IJsonrpcObject extends JsonrpcObject {
 
-//    /**
-//     * Sets an entry of unrecognized property.
-//     *
-//     * @param key   the key of the unrecognized property.
-//     * @param value the value of the unrecognized property.
-//     * @return previous value mapped to the {@code key}.
-//     */
-//    @JsonAnySetter
-//    default Object putUnrecognizedProperty(final String key, final Object value) {
-//        requireNonNull(key, "key is null");
-//        return unrecognizedProperties(getClass(), this).put(key, value);
-//    }
-//
-//    /**
-//     * Returns unrecognized properties.
-//     *
-//     * @return unrecognized properties.
-//     */
-//    @JsonAnyGetter
-//    default Map<String, Object> getUnrecognizedProperties() {
-//        return unrecognizedProperties(getClass(), this);
-//    }
 }

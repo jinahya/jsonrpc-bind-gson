@@ -194,9 +194,9 @@ final class IJsonrpcObjectHelper {
                                   supplier == SUPPLYING_TRUE ? SUPPLYING_TRUE_ : SUPPLYING_FALSE_);
     }
 
-    static <N extends JsonElement> boolean hasOneThenEvaluateOrTrue(final Class<?> clazz, final Object object,
-                                                                    final BiFunction<Class<?>, Object, ? extends N> getter,
-                                                                    final Predicate<? super N> predicate) {
+    static <N extends JsonElement> boolean hasOneThenEvaluateOrTrue(
+            final Class<?> clazz, final Object object, final BiFunction<Class<?>, Object, ? extends N> getter,
+            final Predicate<? super N> predicate) {
         return hasOneThenEvaluateOrGet(clazz, object, getter, predicate, SUPPLYING_TRUE);
     }
 

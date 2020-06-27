@@ -24,9 +24,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static com.github.jinahya.jsonrpc.bind.v2.JsonrpcMessage.PROPERTY_NAME_ID;
 import static com.github.jinahya.jsonrpc.bind.v2.JsonrpcRequestMessage.PROPERTY_NAME_PARAMS;
 import static com.github.jinahya.jsonrpc.bind.v2.JsonrpcResponseMessage.PROPERTY_NAME_ERROR;
@@ -36,8 +33,6 @@ import static com.github.jinahya.jsonrpc.bind.v2.gson.IJsonrpcObjectHelper.get;
 import static com.github.jinahya.jsonrpc.bind.v2.gson.IJsonrpcObjectHelper.set;
 
 final class IJsonrpcMessageHelper {
-
-    static final String PROPERTY_NAME_UNRECOGNIZED_PROPERTIES = "unrecognizedProperties";
 
     // -----------------------------------------------------------------------------------------------------------------
     static JsonPrimitive getId(final Class<?> clazz, final Object object) {
@@ -82,25 +77,6 @@ final class IJsonrpcMessageHelper {
 
     static void setResponseErrorData(final Class<?> clazz, final Object object, final JsonElement value) {
         set(clazz, PROPERTY_NAME_DATA, object, value);
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    @SuppressWarnings({"unchecked"})
-    static Map<String, Object> getUnrecognizedProperties(final Class<?> clazz, final Object object) {
-        return (Map<String, Object>) get(clazz, PROPERTY_NAME_UNRECOGNIZED_PROPERTIES, object);
-    }
-
-    static void setUnrecognizedProperties(final Class<?> clazz, final Object object, final Map<String, Object> value) {
-        set(clazz, PROPERTY_NAME_UNRECOGNIZED_PROPERTIES, object, value);
-    }
-
-    static Map<String, Object> unrecognizedProperties(final Class<?> clazz, final Object object) {
-        final Map<String, Object> unrecognizedProperties = getUnrecognizedProperties(clazz, object);
-        if (unrecognizedProperties == null) {
-            setUnrecognizedProperties(clazz, object, new HashMap<>());
-            return unrecognizedProperties(clazz, object);
-        }
-        return unrecognizedProperties;
     }
 
     // -----------------------------------------------------------------------------------------------------------------

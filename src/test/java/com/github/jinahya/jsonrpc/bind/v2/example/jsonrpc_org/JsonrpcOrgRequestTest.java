@@ -62,7 +62,6 @@ class JsonrpcOrgRequestTest {
         for (ClassLoader l = getClass().getClassLoader(); l != null; l = l.getParent()) {
             log.debug("l: {}", l);
         }
-        getClass().getResourceAsStream("a.txt").close();
         acceptResourceStream(
                 "e01_positional_parameters_01_request.json",
                 s -> {
