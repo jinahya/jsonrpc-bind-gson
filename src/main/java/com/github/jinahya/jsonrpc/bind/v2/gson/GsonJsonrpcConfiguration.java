@@ -21,6 +21,7 @@ package com.github.jinahya.jsonrpc.bind.v2.gson;
  */
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import static java.util.Objects.requireNonNull;
 
@@ -31,7 +32,8 @@ import static java.util.Objects.requireNonNull;
  */
 public final class GsonJsonrpcConfiguration {
 
-    private static Gson gson = new Gson();
+    @SuppressWarnings({"java:S3077"}) // Gson is thread-safe!!!
+    static volatile Gson gson;
 
     /**
      * Returns current gson instance.
@@ -47,8 +49,22 @@ public final class GsonJsonrpcConfiguration {
      *
      * @param gson new gson instance.
      */
-    public static synchronized void setGson(final Gson gson) {
+    static synchronized void setGson(final Gson gson) {
         GsonJsonrpcConfiguration.gson = requireNonNull(gson, "gson is null");
+    }
+
+    /**
+     * Replaces current gson instance with specified builder.
+     *
+     * @param builder a gson builder instance.
+     */
+    public static synchronized void setGson(final GsonBuilder builder) {
+        requireNonNull(builder, "builder is null");
+        setGson(builder.create());
+    }
+
+    static {
+        setGson(new GsonBuilder());
     }
 
     private GsonJsonrpcConfiguration() {
