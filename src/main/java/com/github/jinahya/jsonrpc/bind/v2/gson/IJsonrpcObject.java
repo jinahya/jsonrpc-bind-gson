@@ -22,6 +22,21 @@ package com.github.jinahya.jsonrpc.bind.v2.gson;
 
 import com.github.jinahya.jsonrpc.bind.v2.JsonrpcObject;
 
-interface IJsonrpcObject extends JsonrpcObject {
+import javax.validation.constraints.AssertTrue;
 
+import static com.github.jinahya.jsonrpc.bind.v2.gson.GsonJsonrpcConfiguration.getGson;
+
+interface IJsonrpcObject<S extends IJsonrpcObject<S>>
+        extends JsonrpcObject {
+
+    @Override
+    @AssertTrue
+    default boolean isContextuallyValid() {
+        return JsonrpcObject.super.isContextuallyValid();
+    }
+
+    @Override
+    default String toJson() {
+        return getGson().toJson(this);
+    }
 }

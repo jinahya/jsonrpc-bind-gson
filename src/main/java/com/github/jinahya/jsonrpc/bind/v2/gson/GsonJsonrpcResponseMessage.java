@@ -27,9 +27,6 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -38,11 +35,9 @@ import java.io.Reader;
 import static com.github.jinahya.jsonrpc.bind.v2.gson.GsonJsonrpcConfiguration.getGson;
 import static java.util.Objects.requireNonNull;
 
-@Setter(AccessLevel.PROTECTED)
-@Getter(AccessLevel.PROTECTED)
 public class GsonJsonrpcResponseMessage
         extends AbstractJsonrpcResponseMessage
-        implements IJsonrpcResponseMessage {
+        implements IJsonrpcResponseMessage<GsonJsonrpcResponseMessage> {
 
     public static <T extends GsonJsonrpcResponseMessage> T fromJson(final Reader reader, final Class<T> clazz) {
         requireNonNull(reader, "reader is null");
@@ -83,15 +78,15 @@ public class GsonJsonrpcResponseMessage
     @Override
     public String toString() {
         return super.toString() + "{"
-               + PROPERTY_NAME_ID + "=" + id
+               + PROPERTY_NAME_ERROR + "=" + error
                + "," + PROPERTY_NAME_RESULT + "=" + result
-               + "," + PROPERTY_NAME_ERROR + "=" + error
+               + "," + PROPERTY_NAME_ID + "=" + id
                + "}";
     }
 
-    private JsonPrimitive id;
+    private JsonObject error;
 
     private JsonElement result;
 
-    private JsonObject error;
+    private JsonPrimitive id;
 }

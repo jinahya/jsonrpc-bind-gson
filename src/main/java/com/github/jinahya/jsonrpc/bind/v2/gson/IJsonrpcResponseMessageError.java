@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+import javax.validation.constraints.AssertTrue;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,9 @@ import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
 import static java.util.Optional.ofNullable;
 
-interface IJsonrpcResponseMessageError extends JsonrpcResponseMessageError, IJsonrpcObject {
+interface IJsonrpcResponseMessageError<S extends IJsonrpcResponseMessageError<S>>
+        extends IJsonrpcObject<S>,
+                JsonrpcResponseMessageError {
 
     @Override
     default boolean hasData() {
@@ -50,6 +53,12 @@ interface IJsonrpcResponseMessageError extends JsonrpcResponseMessageError, IJso
                 IJsonrpcMessageHelper::getResponseErrorData,
                 evaluatingTrue()
         );
+    }
+
+    @Override
+    @AssertTrue
+    default boolean isDataContextuallyValid() {
+        return JsonrpcResponseMessageError.super.isDataContextuallyValid();
     }
 
     @Override
@@ -63,12 +72,7 @@ interface IJsonrpcResponseMessageError extends JsonrpcResponseMessageError, IJso
                     if (data.isJsonArray()) {
                         return fromJsonArrayToListOf(data.getAsJsonArray(), elementClass);
                     }
-                    final Gson gson = getGson();
-                    try {
-                        return new ArrayList<>(singletonList(gson.fromJson(data, elementClass)));
-                    } catch (final JsonSyntaxException jse) {
-                        throw new JsonrpcBindException(jse);
-                    }
+                    return new ArrayList<>(singletonList(getDataAsObject(elementClass)));
                 }
         );
     }

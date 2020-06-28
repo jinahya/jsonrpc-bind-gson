@@ -43,7 +43,9 @@ import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
 import static java.util.Optional.ofNullable;
 
-interface IJsonrpcRequestMessage extends JsonrpcRequestMessage, IJsonrpcMessage {
+interface IJsonrpcRequestMessage<S extends IJsonrpcRequestMessage<S>>
+        extends IJsonrpcMessage<S>,
+                JsonrpcRequestMessage {
 
     @Override
     default boolean hasParams() {
@@ -77,12 +79,10 @@ interface IJsonrpcRequestMessage extends JsonrpcRequestMessage, IJsonrpcMessage 
                         final JsonArray jsonArray = params.getAsJsonArray();
                         return fromJsonArrayToListOf(jsonArray, elementClass);
                     }
-                    final Gson gson = getGson();
-                    try {
-                        return new ArrayList<>(singletonList(gson.fromJson(params, elementClass)));
-                    } catch (final JsonSyntaxException jse) {
-                        throw new JsonrpcBindException(jse.getCause());
-                    }
+                    assert params.isJsonObject();
+                    final T element = getParamsAsObject(elementClass);
+                    assert element != null;
+                    return new ArrayList<>(singletonList(element));
                 }
         );
     }

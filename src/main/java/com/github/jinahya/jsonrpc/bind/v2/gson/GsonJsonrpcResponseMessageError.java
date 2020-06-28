@@ -22,15 +22,10 @@ package com.github.jinahya.jsonrpc.bind.v2.gson;
 
 import com.github.jinahya.jsonrpc.bind.v2.AbstractJsonrpcResponseMessageError;
 import com.google.gson.JsonElement;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
 
-@Setter(AccessLevel.PROTECTED)
-@Getter(AccessLevel.PROTECTED)
 public class GsonJsonrpcResponseMessageError
         extends AbstractJsonrpcResponseMessageError
-        implements IJsonrpcResponseMessageError {
+        implements IJsonrpcResponseMessageError<GsonJsonrpcResponseMessageError> {
 
     /**
      * Returns a string representation of the object.

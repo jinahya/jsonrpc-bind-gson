@@ -35,7 +35,9 @@ import static com.github.jinahya.jsonrpc.bind.v2.gson.IJsonrpcObjectHelper.hasOn
 import static com.github.jinahya.jsonrpc.bind.v2.gson.IJsonrpcObjectHelper.hasOneThenMapOrNull;
 import static java.util.Optional.ofNullable;
 
-interface IJsonrpcMessage extends JsonrpcMessage, IJsonrpcObject {
+interface IJsonrpcMessage<S extends IJsonrpcObject<S>>
+        extends IJsonrpcObject<S>,
+                JsonrpcMessage {
 
     @Override
     default boolean hasId() {

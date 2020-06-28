@@ -28,7 +28,6 @@ import com.google.gson.JsonSyntaxException;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +42,8 @@ import static com.github.jinahya.jsonrpc.bind.v2.gson.GsonJsonrpcConfiguration.g
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.Collections.synchronizedMap;
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.StreamSupport.stream;
 
 final class IJsonrpcObjectHelper {
 
@@ -210,17 +211,17 @@ final class IJsonrpcObjectHelper {
     static <T> List<T> fromJsonArrayToListOf(final JsonArray jsonArray, final Class<T> elementClass) {
         assert jsonArray != null;
         assert elementClass != null;
-        final int size = jsonArray.size();
-        final List<T> list = new ArrayList<>(size);
         final Gson gson = getGson();
-        jsonArray.forEach(e -> {
-            try {
-                list.add(gson.fromJson(e, elementClass));
-            } catch (final JsonSyntaxException jse) {
-                throw new JsonrpcBindException(jse);
-            }
-        });
-        return list;
+        return stream(jsonArray.spliterator(), false)
+                .map(e -> {
+                    try {
+                        return gson.fromJson(e, elementClass);
+                    } catch (final JsonSyntaxException jse) {
+                        throw new JsonrpcBindException(jse);
+                    }
+                })
+                .collect(toList())
+                ;
     }
 
     // -----------------------------------------------------------------------------------------------------------------

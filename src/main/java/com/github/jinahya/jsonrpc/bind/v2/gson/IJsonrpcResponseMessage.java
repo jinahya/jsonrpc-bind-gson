@@ -28,6 +28,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+import javax.validation.constraints.AssertTrue;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,15 @@ import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
 import static java.util.Optional.ofNullable;
 
-interface IJsonrpcResponseMessage extends JsonrpcResponseMessage, IJsonrpcMessage {
+interface IJsonrpcResponseMessage<S extends IJsonrpcResponseMessage<S>>
+        extends IJsonrpcMessage<S>,
+                JsonrpcResponseMessage {
+
+    @Override
+    @AssertTrue
+    default boolean isResultAndErrorExclusive() {
+        return JsonrpcResponseMessage.super.isResultAndErrorExclusive();
+    }
 
     // ---------------------------------------------------------------------------------------------------------- result
     @Override
@@ -57,6 +66,12 @@ interface IJsonrpcResponseMessage extends JsonrpcResponseMessage, IJsonrpcMessag
     }
 
     @Override
+    @AssertTrue
+    default boolean isResultContextuallyValid() {
+        return JsonrpcResponseMessage.super.isResultContextuallyValid();
+    }
+
+    @Override
     default <T> List<T> getResultAsArray(final Class<T> elementClass) {
         requireNonNull(elementClass, "elementClass is null");
         return hasOneThenMapOrNull(
@@ -67,12 +82,7 @@ interface IJsonrpcResponseMessage extends JsonrpcResponseMessage, IJsonrpcMessag
                     if (result.isJsonArray()) {
                         return fromJsonArrayToListOf(result.getAsJsonArray(), elementClass);
                     }
-                    final Gson gson = getGson();
-                    try {
-                        return new ArrayList<>(singletonList(gson.fromJson(result, elementClass)));
-                    } catch (final JsonSyntaxException jse) {
-                        throw new JsonrpcBindException(jse);
-                    }
+                    return new ArrayList<>(singletonList(getResultAsObject(elementClass)));
                 }
         );
     }
@@ -147,5 +157,10 @@ interface IJsonrpcResponseMessage extends JsonrpcResponseMessage, IJsonrpcMessag
     default void setErrorAs(final JsonrpcResponseMessageError error) {
         final Gson gson = getGson();
         setResponseError(getClass(), this, (JsonObject) ofNullable(error).map(gson::toJsonTree).orElse(null));
+    }
+
+    @Override
+    default JsonrpcResponseMessageError getErrorAsDefaultType() {
+        return getErrorAs(GsonJsonrpcResponseMessageError.class);
     }
 }
