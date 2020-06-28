@@ -32,8 +32,7 @@ import static java.util.Objects.requireNonNull;
  */
 public final class GsonJsonrpcConfiguration {
 
-    @SuppressWarnings({"java:S3077"}) // Gson is thread-safe!!!
-    static volatile Gson gson;
+    private static Gson gson;
 
     /**
      * Returns current gson instance.
