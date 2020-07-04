@@ -1,4 +1,4 @@
-package com.github.jinahya.jsonrpc.bind.v2.gson;
+package com.github.jinahya.jsonrpc.bind.v2;
 
 /*-
  * #%L
@@ -21,22 +21,21 @@ package com.github.jinahya.jsonrpc.bind.v2.gson;
  */
 
 import com.github.jinahya.jsonrpc.bind.JsonrpcBindException;
-import com.github.jinahya.jsonrpc.bind.v2.JsonrpcMessage;
 import com.google.gson.JsonPrimitive;
 
 import javax.validation.constraints.AssertTrue;
 import java.math.BigInteger;
 
-import static com.github.jinahya.jsonrpc.bind.v2.gson.GsonJsonrpcConfiguration.getGson;
-import static com.github.jinahya.jsonrpc.bind.v2.gson.IJsonrpcMessageHelper.setId;
-import static com.github.jinahya.jsonrpc.bind.v2.gson.IJsonrpcObjectHelper.evaluatingTrue;
-import static com.github.jinahya.jsonrpc.bind.v2.gson.IJsonrpcObjectHelper.hasOneThenEvaluateOrFalse;
-import static com.github.jinahya.jsonrpc.bind.v2.gson.IJsonrpcObjectHelper.hasOneThenEvaluateOrTrue;
-import static com.github.jinahya.jsonrpc.bind.v2.gson.IJsonrpcObjectHelper.hasOneThenMapOrNull;
+import static com.github.jinahya.jsonrpc.bind.v2.GsonJsonrpcConfiguration.getGson;
+import static com.github.jinahya.jsonrpc.bind.v2.GsonJsonrpcObjectHelper.hasOneThenEvaluateOrFalse;
+import static com.github.jinahya.jsonrpc.bind.v2.GsonJsonrpcObjectHelper.hasOneThenEvaluateOrTrue;
+import static com.github.jinahya.jsonrpc.bind.v2.GsonJsonrpcObjectHelper.hasOneThenMapOrNull;
+import static com.github.jinahya.jsonrpc.bind.v2.IGsonJsonrpcMessageHelper.setId;
+import static com.github.jinahya.jsonrpc.bind.v2.JsonrpcObjectHelper.evaluatingTrue;
 import static java.util.Optional.ofNullable;
 
-interface IJsonrpcMessage<S extends IJsonrpcObject<S>>
-        extends IJsonrpcObject<S>,
+interface IGsonJsonrpcMessage<S extends IGsonJsonrpcObject<S>>
+        extends IGsonJsonrpcObject<S>,
                 JsonrpcMessage {
 
     @Override
@@ -44,17 +43,18 @@ interface IJsonrpcMessage<S extends IJsonrpcObject<S>>
         return hasOneThenEvaluateOrFalse(
                 getClass(),
                 this,
-                IJsonrpcMessageHelper::getId,
+                IGsonJsonrpcMessageHelper::getId,
                 evaluatingTrue()
         );
     }
 
     @Override
-    default @AssertTrue boolean isIdContextuallyValid() {
+    default @AssertTrue
+    boolean isIdContextuallyValid() {
         return hasOneThenEvaluateOrTrue(
                 getClass(),
                 this,
-                IJsonrpcMessageHelper::getId,
+                IGsonJsonrpcMessageHelper::getId,
                 id -> id.isString() || id.isNumber()
         );
     }
@@ -64,7 +64,7 @@ interface IJsonrpcMessage<S extends IJsonrpcObject<S>>
         return hasOneThenMapOrNull(
                 getClass(),
                 this,
-                IJsonrpcMessageHelper::getId,
+                IGsonJsonrpcMessageHelper::getId,
                 id -> {
                     try {
                         return id.getAsString();
@@ -85,7 +85,7 @@ interface IJsonrpcMessage<S extends IJsonrpcObject<S>>
         return hasOneThenMapOrNull(
                 getClass(),
                 this,
-                IJsonrpcMessageHelper::getId,
+                IGsonJsonrpcMessageHelper::getId,
                 id -> {
                     try {
                         return id.getAsBigInteger();
@@ -106,7 +106,7 @@ interface IJsonrpcMessage<S extends IJsonrpcObject<S>>
         return ofNullable(hasOneThenMapOrNull(
                 getClass(),
                 this,
-                IJsonrpcMessageHelper::getId,
+                IGsonJsonrpcMessageHelper::getId,
                 id -> {
                     if (id.isNumber()) {
                         try {
@@ -130,7 +130,7 @@ interface IJsonrpcMessage<S extends IJsonrpcObject<S>>
         return ofNullable(hasOneThenMapOrNull(
                 getClass(),
                 this,
-                IJsonrpcMessageHelper::getId,
+                IGsonJsonrpcMessageHelper::getId,
                 id -> {
                     if (id.isNumber()) {
                         try {

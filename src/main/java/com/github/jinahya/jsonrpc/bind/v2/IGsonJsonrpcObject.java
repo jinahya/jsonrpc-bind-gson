@@ -1,4 +1,4 @@
-package com.github.jinahya.jsonrpc.bind.v2.gson;
+package com.github.jinahya.jsonrpc.bind.v2;
 
 /*-
  * #%L
@@ -20,24 +20,21 @@ package com.github.jinahya.jsonrpc.bind.v2.gson;
  * #L%
  */
 
-import com.github.jinahya.jsonrpc.bind.v2.AbstractJsonrpcResponseMessageError;
-import com.google.gson.JsonElement;
+import javax.validation.constraints.AssertTrue;
 
-public class GsonJsonrpcResponseMessageError
-        extends AbstractJsonrpcResponseMessageError
-        implements IJsonrpcResponseMessageError<GsonJsonrpcResponseMessageError> {
+import static com.github.jinahya.jsonrpc.bind.v2.GsonJsonrpcConfiguration.getGson;
 
-    /**
-     * Returns a string representation of the object.
-     *
-     * @return a string representation of the object.
-     */
+interface IGsonJsonrpcObject<S extends IGsonJsonrpcObject<S>>
+        extends JsonrpcObject {
+
     @Override
-    public String toString() {
-        return super.toString() + "{"
-               + PROPERTY_NAME_DATA + "=" + data
-               + "}";
+    @AssertTrue
+    default boolean isContextuallyValid() {
+        return JsonrpcObject.super.isContextuallyValid();
     }
 
-    private JsonElement data;
+    @Override
+    default String toJson() {
+        return getGson().toJson(this);
+    }
 }

@@ -1,4 +1,4 @@
-package com.github.jinahya.jsonrpc.bind.v2.gson;
+package com.github.jinahya.jsonrpc.bind.v2.examples.jsonrpc_org;
 
 /*-
  * #%L
@@ -20,23 +20,9 @@ package com.github.jinahya.jsonrpc.bind.v2.gson;
  * #L%
  */
 
-import com.github.jinahya.jsonrpc.bind.v2.JsonrpcObject;
+import lombok.extern.slf4j.Slf4j;
 
-import javax.validation.constraints.AssertTrue;
+@Slf4j
+class GsonJsonrpcOrgResponseTest extends JsonrpcOrgResponseTest {
 
-import static com.github.jinahya.jsonrpc.bind.v2.gson.GsonJsonrpcConfiguration.getGson;
-
-interface IJsonrpcObject<S extends IJsonrpcObject<S>>
-        extends JsonrpcObject {
-
-    @Override
-    @AssertTrue
-    default boolean isContextuallyValid() {
-        return JsonrpcObject.super.isContextuallyValid();
-    }
-
-    @Override
-    default String toJson() {
-        return getGson().toJson(this);
-    }
 }

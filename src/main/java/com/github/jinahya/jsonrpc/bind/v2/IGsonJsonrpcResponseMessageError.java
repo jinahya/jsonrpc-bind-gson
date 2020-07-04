@@ -1,4 +1,4 @@
-package com.github.jinahya.jsonrpc.bind.v2.gson;
+package com.github.jinahya.jsonrpc.bind.v2;
 
 /*-
  * #%L
@@ -20,15 +20,8 @@ package com.github.jinahya.jsonrpc.bind.v2.gson;
  * #L%
  */
 
-import org.junit.jupiter.api.Test;
+interface IGsonJsonrpcResponseMessageError<S extends IGsonJsonrpcResponseMessageError<S>>
+        extends IGsonJsonrpcObject<S>,
+                JsonrpcResponseMessageError {
 
-import static com.github.jinahya.jsonrpc.bind.v2.gson.GsonJsonrpcConfiguration.getGson;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-class GsonJsonrpcConfigurationTest {
-
-    @Test
-    void assertGetGsonReturnsNonNull() {
-        assertNotNull(getGson());
-    }
 }
