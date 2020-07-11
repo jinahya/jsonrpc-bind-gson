@@ -20,24 +20,8 @@ package com.github.jinahya.jsonrpc.bind.v2;
  * #L%
  */
 
-import com.google.gson.JsonPrimitive;
-
-import static com.github.jinahya.jsonrpc.bind.v2.JsonrpcMessage.PROPERTY_NAME_ID;
-import static com.github.jinahya.jsonrpc.bind.v2.JsonrpcObjectHelper.get;
-import static com.github.jinahya.jsonrpc.bind.v2.JsonrpcObjectHelper.set;
-
 final class IGsonJsonrpcMessageHelper {
 
-    // -----------------------------------------------------------------------------------------------------------------
-    static JsonPrimitive getId(final Class<?> clazz, final Object object) {
-        return (JsonPrimitive) get(clazz, PROPERTY_NAME_ID, object);
-    }
-
-    static void setId(final Class<?> clazz, final Object object, final JsonPrimitive value) {
-        set(clazz, PROPERTY_NAME_ID, object, value);
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
     private IGsonJsonrpcMessageHelper() {
         throw new AssertionError("instantiation is not allowed");
     }

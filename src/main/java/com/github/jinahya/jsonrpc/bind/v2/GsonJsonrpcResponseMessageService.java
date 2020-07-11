@@ -20,8 +20,6 @@ package com.github.jinahya.jsonrpc.bind.v2;
  * #L%
  */
 
-import com.github.jinahya.jsonrpc.bind.v2.spi.JsonrpcResponseMessageService;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -33,17 +31,12 @@ public class GsonJsonrpcResponseMessageService
         implements JsonrpcResponseMessageService {
 
     @Override
-    public JsonrpcResponseMessage newInstance() {
-        return new GsonJsonrpcResponseMessage();
-    }
-
-    @Override
     public JsonrpcResponseMessage fromJson(Object source) {
         requireNonNull(source, "source is null");
         if (source instanceof InputStream) {
             source = new InputStreamReader((InputStream) source);
         }
-        return GsonJsonrpcMessages.fromJson(source, GsonJsonrpcResponseMessage.class);
+        return GsonJsonrpcMessageServiceHelper.fromJson(source, GsonJsonrpcResponseMessage.class);
     }
 
     @Override
@@ -52,6 +45,6 @@ public class GsonJsonrpcResponseMessageService
         if (target instanceof OutputStream) {
             target = new OutputStreamWriter((OutputStream) target);
         }
-        GsonJsonrpcMessages.toJson(target, message);
+        GsonJsonrpcMessageServiceHelper.toJson(target, message);
     }
 }

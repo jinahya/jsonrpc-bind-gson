@@ -67,16 +67,8 @@
     <dependency>
       <groupId>com.github.jinahya</groupId>
       <artifactId>jsonrpc-bind-tests</artifactId>
-      <version>${version.jsonrpc-bind}</version>
+      <version>${version.jsonrpc-bind-tests}</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.github.jinahya</groupId>
-      <artifactId>jsonrpc-bind</artifactId>
-      <version>${version.jsonrpc-bind}</version>
-      <scope>test</scope>
-      <classifier>tests</classifier>
-      <type>test-jar</type>
     </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>

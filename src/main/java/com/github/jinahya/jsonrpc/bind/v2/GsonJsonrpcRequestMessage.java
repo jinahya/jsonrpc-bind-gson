@@ -29,6 +29,7 @@ import com.google.gson.reflect.TypeToken;
 
 import javax.validation.constraints.AssertTrue;
 import java.lang.reflect.Type;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,9 +51,78 @@ public class GsonJsonrpcRequestMessage
     @Override
     public String toString() {
         return super.toString() + "{"
-               + PROPERTY_NAME_PARAMS + "=" + params
-               + "," + PROPERTY_NAME_ID + "=" + id
+               + PROPERTY_NAME_ID + "=" + id
+               + "," + PROPERTY_NAME_PARAMS + "=" + params
                + "}";
+    }
+
+    // -------------------------------------------------------------------------------------------------------------- id
+    @Override
+    public boolean hasId() {
+        return id != null && !id.isJsonNull() && id.isJsonPrimitive();
+    }
+
+    @Override
+    @AssertTrue
+    public boolean isIdContextuallyValid() {
+        if (!hasId()) {
+            return true;
+        }
+        return ((JsonPrimitive) id).isString() || ((JsonPrimitive) id).isNumber();
+    }
+
+    @Override
+    public String getIdAsString() {
+        if (!hasId()) {
+            return null;
+        }
+        return id.getAsString();
+    }
+
+    @Override
+    public void setIdAsString(final String id) {
+        this.id = ofNullable(id).map(v -> (JsonPrimitive) getGson().toJsonTree(v)).orElse(null);
+    }
+
+    @Override
+    public BigInteger getIdAsNumber() {
+        if (!hasId()) {
+            return null;
+        }
+        try {
+            return id.getAsBigInteger();
+        } catch (final NumberFormatException nfe) {
+            try {
+                return new BigInteger(getIdAsString());
+            } catch (final NumberFormatException nfe2) {
+                throw new JsonrpcBindException(nfe2);
+            }
+        }
+    }
+
+    @Override
+    public void setIdAsNumber(final BigInteger id) {
+        this.id = ofNullable(id).map(v -> (JsonPrimitive) getGson().toJsonTree(id)).orElse(null);
+    }
+
+    @Override
+    public Long getIdAsLong() {
+        return super.getIdAsLong();
+    }
+
+    @Override
+    public void setIdAsLong(final Long id) {
+        super.setIdAsLong(id);
+    }
+
+    @Override
+    public Integer getIdAsInteger() {
+        return super.getIdAsInteger();
+    }
+
+    @Override
+    public void setIdAsInteger(final Integer id) {
+        super.setIdAsInteger(id);
     }
 
     // ---------------------------------------------------------------------------------------------------------- params
@@ -109,7 +179,8 @@ public class GsonJsonrpcRequestMessage
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    private JsonElement params;
+    private JsonElement id;
 
-    private JsonPrimitive id;
+    // -----------------------------------------------------------------------------------------------------------------
+    private JsonElement params;
 }
