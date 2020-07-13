@@ -50,13 +50,21 @@
     <version.maven-failsafe>${version.maven-surefire}</version.maven-failsafe>
     <version.maven-javadoc-plugin>3.2.0</version.maven-javadoc-plugin>
     <version.maven-surefire>3.0.0-M4</version.maven-surefire>
-    <version.org.junit.jupiter>5.6.2</version.org.junit.jupiter>
   </properties>
 
-  <dependencyManagement>
-    <dependencies>
-    </dependencies>
-  </dependencyManagement>
+  <repositories>
+    <repository>
+      <id>ossrh-snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <dependencies>
     <dependency>
       <groupId>com.github.jinahya</groupId>
@@ -77,9 +85,9 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>javax.validation</groupId>
-      <artifactId>validation-api</artifactId>
-      <version>2.0.1.Final</version>
+      <groupId>jakarta.validation</groupId>
+      <artifactId>jakarta.validation-api</artifactId>
+      <version>3.0.0</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -160,7 +168,7 @@
             <!--            <phase>package</phase>-->
             <phase>generate-sources</phase>
             <goals>
-<!--              <goal>unpack</goal>-->
+              <!--              <goal>unpack</goal>-->
             </goals>
             <configuration>
               <artifactItems>

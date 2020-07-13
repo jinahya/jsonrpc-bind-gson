@@ -26,8 +26,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import jakarta.validation.constraints.AssertTrue;
 
-import javax.validation.constraints.AssertTrue;
 import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.util.ArrayList;

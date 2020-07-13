@@ -24,8 +24,8 @@ import com.github.jinahya.jsonrpc.bind.JsonrpcBindException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import jakarta.validation.constraints.AssertTrue;
 
-import javax.validation.constraints.AssertTrue;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;

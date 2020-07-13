@@ -20,7 +20,7 @@ package com.github.jinahya.jsonrpc.bind.v2;
  * #L%
  */
 
-import javax.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.AssertTrue;
 
 interface IGsonJsonrpcObject<S extends IGsonJsonrpcObject<S>>
         extends JsonrpcObject {
